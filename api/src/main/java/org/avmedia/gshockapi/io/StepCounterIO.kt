@@ -22,8 +22,9 @@ object StepCounterIOFunctional {
     /**
      * Pure parser: Extracts the daily step total from an activity-record payload.
      *
-     * Protocol (confirmed from HCI snoop log):
-     *   Payload structure of the 0x0014 (CASIO_CONVOY) notification:
+     * Protocol (UNVERIFIED - ported from ABL-100, not yet confirmed against
+     * a real GBA-900 capture; adjust once real notification bytes are seen):
+     *   Assumed payload structure of the 0x0014 (CASIO_CONVOY) notification:
      *     [0]      0x26  record type (life-log/activity-record)
      *     [1]      day of week (1=Mon … 7=Sun)
      *     [2]      month
@@ -156,6 +157,8 @@ object StepCounterIO {
             val intArr = Utils.toIntArray(data)
             // Skip the first element (characteristic code) and convert to bytes
             val bytes = Utils.byteArrayOfIntArray(intArr.drop(1).toIntArray())
+
+            Timber.i("Step counter raw payload: ${bytes.joinToString(" ") { "%02x".format(it) }}")
 
             // Use pure function to parse step count
             val stepCount = StepCounterIOFunctional.parseStepCount(bytes)

@@ -415,6 +415,9 @@ class MainActivity : ComponentActivity() {
         if (WatchInfo.hasTemperature) {
             viewModel.addLog("Temperature: ${api.getWatchTemperature()}")
         }
+        if (WatchInfo.hasStepCounter) {
+            viewModel.addLog("Steps: ${api.getStepCount()}")
+        }
 
         getDSTState(viewModel)
 
